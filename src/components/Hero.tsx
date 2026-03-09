@@ -1,11 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useReadContract } from "wagmi";
 import { ERC8004_ADDRESS, ERC8004_ABI, ERC8183_ADDRESS, ERC8183_ABI } from "@/abis";
+import dynamic from "next/dynamic";
+
+const RegisterAgentModal = dynamic(() => import("./RegisterAgentModal"), { ssr: false });
 
 export function Hero() {
+    const [showModal, setShowModal] = useState(false);
     // Fetch live agents count (starts at ID 1, so nextAgentId - 1 is the total)
     const { data: agentsCountData } = useReadContract({
         address: ERC8004_ADDRESS,
@@ -51,10 +55,9 @@ export function Hero() {
                     gardens.
                 </p>
                 <div className="hero-actions">
-                    <button className="btn-primary" onClick={() => {
-                        document.getElementById('agents')?.scrollIntoView({ behavior: 'smooth' });
-                        history.replaceState(null, '', '/');
-                    }}>Browse Agents</button>
+                    <button className="btn-primary" onClick={() => setShowModal(true)}>
+                        Register Agent
+                    </button>
                     <a href="#how" className="btn-ghost" onClick={(e) => {
                         e.preventDefault();
                         document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' });
@@ -98,6 +101,7 @@ export function Hero() {
                     </div>
                 </div>
             </div>
+            {showModal && <RegisterAgentModal onClose={() => setShowModal(false)} />}
         </section>
     );
 }

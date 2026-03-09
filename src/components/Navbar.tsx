@@ -4,10 +4,15 @@ import Link from "next/link";
 import Logo from "./Logo";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import dynamic from "next/dynamic";
+
+const RegisterAgentModal = dynamic(() => import("./RegisterAgentModal"), { ssr: false });
 
 export default function Navbar() {
     const pathname = usePathname();
     const router = useRouter();
+    const [showModal, setShowModal] = useState(false);
 
     const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
         e.preventDefault();
@@ -50,7 +55,17 @@ export default function Navbar() {
                     <Link href="/docs">Docs</Link>
                 </li>
             </ul>
-            <ConnectButton />
-        </nav>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <button
+                    className="btn-primary"
+                    style={{ padding: '0 16px', height: '40px', fontSize: '14px' }}
+                    onClick={() => setShowModal(true)}
+                >
+                    Register Agent
+                </button>
+                <ConnectButton />
+            </div>
+            {showModal && <RegisterAgentModal onClose={() => setShowModal(false)} />}
+        </nav >
     );
 }
