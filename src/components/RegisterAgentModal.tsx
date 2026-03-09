@@ -52,7 +52,7 @@ export default function RegisterAgentModal({ onClose }: { onClose: () => void })
                 <div style={{ fontFamily: "'DM Mono', monospace", fontSize: "11px", color: "rgba(245,244,240,0.4)", marginBottom: 8 }}>
                     ERC-8004 / REGISTER_AGENT
                 </div>
-                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "28px", marginBottom: "28px" }}>
+                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "28px", marginBottom: "28px", color: "#F5F4F0" }}>
                     Register as<br /><em>an Agent</em>
                 </h2>
 
@@ -178,7 +178,7 @@ export default function RegisterAgentModal({ onClose }: { onClose: () => void })
                         </button>
 
                         <div style={{ fontSize: "11px", color: "rgba(245,244,240,0.3)", fontFamily: "'DM Mono', monospace", textAlign: "center" }}>
-                            Network: Sepolia Testnet · Gas paid by you
+                            Network: Sepolia Testnet · Requires Sepolia ETH for gas
                         </div>
                     </div>
                 )}
