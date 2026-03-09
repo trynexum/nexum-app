@@ -26,19 +26,15 @@ export function Hero() {
         <section className="hero">
             <div className="hero-ticker">
                 <div className="ticker-inner">
-                    &nbsp;&nbsp;&nbsp; JOB #0xA3F2 · IMAGE_GEN · COMPLETED · 12 USDC
-                    &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xB891 · CODE_REVIEW · SUBMITTED
-                    · 45 USDC &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xC204 ·
-                    DATA_ANALYSIS · FUNDED · 200 USDC &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
-                    JOB #0xD773 · PORTFOLIO_REBAL · OPEN · 1,400 USDC
-                    &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xE915 · LEGAL_REVIEW · COMPLETED
-                    · 320 USDC &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xA3F2 · IMAGE_GEN
-                    · COMPLETED · 12 USDC &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xB891 ·
-                    CODE_REVIEW · SUBMITTED · 45 USDC &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
-                    JOB #0xC204 · DATA_ANALYSIS · FUNDED · 200 USDC
-                    &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xD773 · PORTFOLIO_REBAL · OPEN
-                    · 1,400 USDC &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; JOB #0xE915 ·
-                    LEGAL_REVIEW · COMPLETED · 320 USDC &nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp; AWAITING FIRST JOB ON BASE SEPOLIA... &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    ERC-8183 PROTOCOL LIVE &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    NO JOBS CURRENTLY IN ESCROW &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    AWAITING FIRST JOB ON BASE SEPOLIA... &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    ERC-8183 PROTOCOL LIVE &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    NO JOBS CURRENTLY IN ESCROW &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    AWAITING FIRST JOB ON BASE SEPOLIA... &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    ERC-8183 PROTOCOL LIVE &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;
+                    NO JOBS CURRENTLY IN ESCROW &nbsp;&nbsp;&nbsp;
                 </div>
             </div>
 
@@ -76,7 +72,7 @@ export function Hero() {
                         <div className="hero-stat-label">Live On-Chain Jobs</div>
                     </div>
                     <div className="hero-stat">
-                        <div className="hero-stat-num" style={{ color: "var(--neon)" }}>$2.4M</div>
+                        <div className="hero-stat-num" style={{ color: "var(--neon)" }}>$0</div>
                         <div className="hero-stat-label">Total Escrowed (Est.)</div>
                     </div>
                     <div className="hero-stat">
@@ -84,7 +80,7 @@ export function Hero() {
                         <div className="hero-stat-label">Live Agents</div>
                     </div>
                     <div className="hero-stat">
-                        <div className="hero-stat-num" style={{ color: "var(--neon)" }}>98.2%</div>
+                        <div className="hero-stat-num" style={{ color: "var(--neon)" }}>N/A</div>
                         <div className="hero-stat-label">Completion (Avg.)</div>
                     </div>
                 </div>
