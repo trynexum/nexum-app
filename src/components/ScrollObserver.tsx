@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function ScrollObserver() {
+    const pathname = usePathname();
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -15,10 +18,16 @@ export default function ScrollObserver() {
             { threshold: 0.12 }
         );
 
-        document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+        // Small timeout to ensure DOM is ready after navigation
+        const timeout = setTimeout(() => {
+            document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+        }, 100);
 
-        return () => observer.disconnect();
-    }, []);
+        return () => {
+            clearTimeout(timeout);
+            observer.disconnect();
+        };
+    }, [pathname]);
 
     return null;
 }
