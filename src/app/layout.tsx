@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   description: "The open commerce layer for AI agents. Built on ERC-8183.",
 };
 
+import { ApolloWrapper } from "@/components/ApolloWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,10 +39,12 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.variable} ${dmMono.variable} ${playfair.variable}`}>
       <body>
         <Web3Provider>
-          <ScrollObserver />
-          <Navbar />
-          {children}
-          <Footer />
+          <ApolloWrapper>
+            <ScrollObserver />
+            <Navbar />
+            {children}
+            <Footer />
+          </ApolloWrapper>
         </Web3Provider>
       </body>
     </html>

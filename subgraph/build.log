@@ -1,0 +1,61 @@
+- Apply migrations
+  [90mSkip migration: Bump mapping apiVersion from 0.0.1 to 0.0.2[39m
+- Apply migrations
+  [90mSkip migration: Bump mapping apiVersion from 0.0.2 to 0.0.3[39m
+- Apply migrations
+  [90mSkip migration: Bump mapping apiVersion from 0.0.3 to 0.0.4[39m
+- Apply migrations
+  [90mSkip migration: Bump mapping apiVersion from 0.0.4 to 0.0.5[39m
+- Apply migrations
+  [90mSkip migration: Bump mapping apiVersion from 0.0.5 to 0.0.6[39m
+- Apply migrations
+  [90mSkip migration: Bump manifest specVersion from 0.0.1 to 0.0.2[39m
+- Apply migrations
+  [90mSkip migration: Bump manifest specVersion from 0.0.2 to 0.0.4[39m
+- Apply migrations
+√ Apply migrations
+- Load subgraph from subgraph.yaml
+× Failed to load subgraph from subgraph.yaml: Error in schema.graphql:
+
+  Agent:
+  - @entity directive requires `immutable` argument
+    [33mHint: Try updating the entity definition with: @entity(immutable: true)[39m
+
+  Evaluator:
+  - @entity directive requires `immutable` argument
+    [33mHint: Try updating the entity definition with: @entity(immutable: true)[39m
+
+  Job:
+  - @entity directive requires `immutable` argument
+    [33mHint: Try updating the entity definition with: @entity(immutable: true)[39m
+
+  ProtocolStat:
+  - @entity directive requires `immutable` argument
+    [33mHint: Try updating the entity definition with: @entity(immutable: true)[39m
+[31mError: Error in schema.graphql:[39m
+
+[31m  Agent:[39m
+[31m  - @entity directive requires `immutable` argument[39m
+[31m    [33mHint: Try updating the entity definition with: @entity(immutable: true)[31m[39m
+
+[31m  Evaluator:[39m
+[31m  - @entity directive requires `immutable` argument[39m
+[31m    [33mHint: Try updating the entity definition with: @entity(immutable: true)[31m[39m
+
+[31m  Job:[39m
+[31m  - @entity directive requires `immutable` argument[39m
+[31m    [33mHint: Try updating the entity definition with: @entity(immutable: true)[31m[39m
+
+[31m  ProtocolStat:[39m
+[31m  - @entity directive requires `immutable` argument[39m
+[31m    [33mHint: Try updating the entity definition with: @entity(immutable: true)[31m[39m
+[31m    at Subgraph.validateSchema (file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/dist/subgraph.js:73:19)[39m
+[31m    at Subgraph.load (file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/dist/subgraph.js:215:18)[39m
+[31m    at async withSpinner (file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/dist/command-helpers/spinner.js:26:24)[39m
+[31m    at async Compiler.loadSubgraph (file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/dist/compiler/index.js:110:16)[39m
+[31m    at async Compiler.compile (file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/dist/compiler/index.js:83:30)[39m
+[31m    at async BuildCommand.run (file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/dist/commands/build.js:87:28)[39m
+[31m    at async BuildCommand._run (C:\Users\ridzk\.gemini\antigravity\scratch\NEXUM\subgraph\node_modules\@oclif\core\lib\command.js:181:22)[39m
+[31m    at async Config.runCommand (C:\Users\ridzk\.gemini\antigravity\scratch\NEXUM\subgraph\node_modules\@oclif\core\lib\config\config.js:456:25)[39m
+[31m    at async run (C:\Users\ridzk\.gemini\antigravity\scratch\NEXUM\subgraph\node_modules\@oclif\core\lib\main.js:97:16)[39m
+[31m    at async file:///C:/Users/ridzk/.gemini/antigravity/scratch/NEXUM/subgraph/node_modules/@graphprotocol/graph-cli/bin/run.js:14:1[39m

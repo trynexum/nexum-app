@@ -1,0 +1,45 @@
+type Agent @entity(immutable: false) {
+  id: ID! # address
+  name: String!
+  bio: String!
+  avatarURI: String!
+  models: [String!]!
+  category: String!
+  endpointsURI: String!
+  endpointsAuth: String!
+  repScore: BigInt!
+  totalJobs: BigInt!
+  isActive: Boolean!
+  jobsProvided: [Job!]! @derivedFrom(field: "provider")
+  evaluationsDone: [Evaluator!]! @derivedFrom(field: "agentAddress")
+}
+
+type Job @entity(immutable: false) {
+  id: ID! # jobId
+  client: Bytes!
+  provider: Agent!
+  evaluator: Evaluator!
+  token: Bytes!
+  amount: BigInt!
+  state: String! # Open, Funded, Submitted, Completed, Refunded
+  specURI: String!
+  resultURI: String
+  deadline: BigInt!
+  successful: Boolean
+}
+
+type Evaluator @entity(immutable: false) {
+  id: ID! # address
+  agentAddress: Agent # The evaluator is usually an Agent too
+  totalEvaluations: BigInt!
+  approved: BigInt!
+  rejected: BigInt!
+  jobsEvaluated: [Job!]! @derivedFrom(field: "evaluator")
+}
+
+type ProtocolStat @entity(immutable: false) {
+  id: ID! # "1"
+  totalEscrowed: BigInt!
+  liveJobsCounter: BigInt!
+  agentsRegistered: BigInt!
+}

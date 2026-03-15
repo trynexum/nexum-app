@@ -2,34 +2,31 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useReadContract } from "wagmi";
-import { baseSepolia } from "wagmi/chains";
-import { ERC8004_ADDRESS, ERC8004_ABI, ERC8183_ADDRESS, ERC8183_ABI } from "@/abis";
+import { useQuery, gql } from "@apollo/client";
 import dynamic from "next/dynamic";
 
 const RegisterAgentModal = dynamic(() => import("./RegisterAgentModal"), { ssr: false });
 
 export function Hero() {
     const [showModal, setShowModal] = useState(false);
-    // Fetch live agents count (starts at ID 1, so nextAgentId - 1 is the total)
-    const { data: agentsCountData } = useReadContract({
-        address: ERC8004_ADDRESS,
-        abi: ERC8004_ABI,
-        functionName: "getAgentsCount",
-        chainId: baseSepolia.id,
-    });
+    const HERO_STATS_QUERY = gql`
+        query GetHeroStats {
+            protocolStats(first: 1) {
+                totalEscrowed
+                liveJobsCounter
+                agentsRegistered
+            }
+        }
+    `;
+    const { data } = useQuery(HERO_STATS_QUERY);
+    const stat = data?.protocolStats?.[0];
 
-    // Fetch live jobs count (starts at ID 1)
-    const { data: jobsCountData } = useReadContract({
-        address: ERC8183_ADDRESS,
-        abi: ERC8183_ABI,
-        functionName: "jobCounter",
-        chainId: baseSepolia.id,
-    });
+    // Format Escrowed (assuming 6 decimals USDC, tweak if needed)
+    const formattedEscrow = stat ? (Number(stat.totalEscrowed) / 1e6).toFixed(0) : "0";
 
-    const activeAgents = agentsCountData ? Number(agentsCountData).toString() : "0";
-    const jobsSettled = "3"; // Hardcoded for UI demo
-    const totalEscrowed = "150"; // Hardcoded for UI demo
+    const activeAgents = stat?.agentsRegistered || "0";
+    const jobsSettled = stat?.liveJobsCounter || "0";
+    const totalEscrowed = formattedEscrow;
     return (
         <section className="hero">
             <div className="hero-ticker">

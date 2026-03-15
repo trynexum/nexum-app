@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useQuery, gql } from "@apollo/client";
 import { useReadContract } from "wagmi";
 import { sepolia } from "wagmi/chains";
 import { ERC8004_ADDRESS, ERC8004_ABI } from "@/abis";
@@ -140,7 +141,29 @@ export function AgentsList() {
 
 
 
+const LIVE_JOBS_QUERY = gql`
+  query GetLiveJobs {
+    jobs(
+      where: { state_not_in: ["Refunded", "Completed"] },
+      orderBy: id,
+      orderDirection: desc,
+      first: 6
+    ) {
+      id
+      state
+      amount
+      specURI
+      provider {
+        name
+      }
+    }
+  }
+`;
+
 export function LiveJobs() {
+    const { data, loading } = useQuery(LIVE_JOBS_QUERY);
+    const jobs = data?.jobs || [];
+
     return (
         <section className="live-section" id="jobs">
             <div className="live-header fade-up">
@@ -163,21 +186,19 @@ export function LiveJobs() {
             </div>
             <div className="jobs-list">
                 <div className="jobs-grid">
-                    {[
-                        { id: "104", agent: "CodeSentinel-v2", task: "Smart Contract Audit (ERC-4626)", amount: "85", status: "In Progress" },
-                        { id: "103", agent: "Midjourney-API-Wrapper", task: "Batch Generation (100 assets)", amount: "20", status: "In Progress" },
-                        { id: "102", agent: "DataForge AI", task: "ETL Pipeline (10GB JSON)", amount: "45", status: "Evaluating" },
-                    ].map((job) => (
+                    {loading && <div style={{ opacity: 0.5, padding: "20px" }}>Loading jobs...</div>}
+                    {!loading && jobs.length === 0 && <div style={{ opacity: 0.5, padding: "20px" }}>No active jobs at the moment.</div>}
+                    {jobs.map((job: any) => (
                         <div key={job.id} className="job-card fade-up">
                             <div className="job-card-header">
                                 <span className="job-id">JOB #{job.id}</span>
-                                <span className={`job-status status-${job.status === "In Progress" ? "busy" : "available"}`}>{job.status}</span>
+                                <span className={`job-status status-${job.state === "Submitted" ? "available" : "busy"}`}>{job.state}</span>
                             </div>
                             <div className="job-details">
-                                <div className="job-task">{job.task}</div>
+                                <div className="job-task">{job.specURI?.length > 30 ? "On-chain Task" : job.specURI}</div>
                                 <div className="job-meta">
-                                    <span>Agent: <strong>{job.agent}</strong></span>
-                                    <span>Escrow: <strong style={{ color: "var(--neon)" }}>{job.amount} <span style={{ fontSize: "0.75em", opacity: 0.8, fontWeight: "normal" }}>USDC</span></strong></span>
+                                    <span>Agent: <strong>{job.provider.name}</strong></span>
+                                    <span>Escrow: <strong style={{ color: "var(--neon)" }}>{(Number(job.amount) / 1e6).toFixed(0)} <span style={{ fontSize: "0.75em", opacity: 0.8, fontWeight: "normal" }}>USDC</span></strong></span>
                                 </div>
                             </div>
                         </div>
@@ -188,12 +209,21 @@ export function LiveJobs() {
     );
 }
 
+const EVALUATORS_QUERY = gql`
+  query GetEvaluators {
+    evaluators(orderBy: totalEvaluations, orderDirection: desc, first: 10) {
+      id
+      totalEvaluations
+      approved
+      rejected
+    }
+  }
+`;
+
 export function Evaluators() {
-    const EVALUATORS = [
-        { addr: "0x72FeeDE6c6...A3F2", evals: 8, approveRate: "87.5%", rejectRate: "12.5%", avgResponse: "2m 14s", firstSeen: "3/10/2026", lastActive: "3/10/2026" },
-        { addr: "0xe8bab8f8...9b8c28", evals: 3, approveRate: "66.7%", rejectRate: "33.3%", avgResponse: "–", firstSeen: "3/10/2026", lastActive: "3/10/2026" },
-        { addr: "0x33333333...333333", evals: 0, approveRate: "–", rejectRate: "–", avgResponse: "–", firstSeen: "3/10/2026", lastActive: "3/10/2026" },
-    ];
+    const { data, loading } = useQuery(EVALUATORS_QUERY);
+    const evaluators = data?.evaluators || [];
+
     return (
         <section className="agents-section" id="evaluators">
             <div className="agents-header fade-up" style={{ borderBottom: "1px solid rgba(245,244,240,0.08)", paddingBottom: "40px", marginBottom: "0" }}>
@@ -217,17 +247,27 @@ export function Evaluators() {
                         </tr>
                     </thead>
                     <tbody>
-                        {EVALUATORS.map((ev) => (
-                            <tr key={ev.addr}>
-                                <td className="eval-addr">{ev.addr}</td>
-                                <td>{ev.evals}</td>
-                                <td className={ev.approveRate !== "–" ? "eval-approve" : ""}>{ev.approveRate}</td>
-                                <td className={ev.rejectRate !== "–" ? "eval-reject" : ""}>{ev.rejectRate}</td>
-                                <td>{ev.avgResponse}</td>
-                                <td>{ev.firstSeen}</td>
-                                <td>{ev.lastActive}</td>
-                            </tr>
-                        ))}
+                        {loading && <tr><td colSpan={7} style={{textAlign: "center", padding: "40px", opacity: 0.5}}>Loading evaluators...</td></tr>}
+                        {!loading && evaluators.length === 0 && <tr><td colSpan={7} style={{textAlign: "center", padding: "40px", opacity: 0.5}}>No evaluators active yet.</td></tr>}
+                        {evaluators.map((ev: any) => {
+                            const total = Number(ev.totalEvaluations);
+                            const app = Number(ev.approved);
+                            const rej = Number(ev.rejected);
+                            const appRate = total > 0 ? ((app / total) * 100).toFixed(1) + "%" : "–";
+                            const rejRate = total > 0 ? ((rej / total) * 100).toFixed(1) + "%" : "–";
+
+                            return (
+                                <tr key={ev.id}>
+                                    <td className="eval-addr">{ev.id.slice(0, 6)}...{ev.id.slice(-4)}</td>
+                                    <td>{total}</td>
+                                    <td className={appRate !== "–" ? "eval-approve" : ""}>{appRate}</td>
+                                    <td className={rejRate !== "–" ? "eval-reject" : ""}>{rejRate}</td>
+                                    <td>–</td>
+                                    <td>Active</td>
+                                    <td>Live</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
                 <div className="eval-table-footer">Testnet data. Sepolia.</div>
