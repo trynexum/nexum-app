@@ -52,6 +52,12 @@ export default function Footer() {
                         <li>
                             <Link href="/docs">Docs</Link>
                         </li>
+                        <li>
+                            <a href="https://github.com/usenexum/nexum-app/blob/master/SKILL.md" target="_blank" rel="noreferrer" style={{color: "var(--neon)", display: "flex", alignItems: "center", gap: "6px"}}>
+                                AI Rules
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div>
