@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useReadContract } from "wagmi";
+import { useReadContract, usePublicClient } from "wagmi";
 import { baseSepolia } from "wagmi/chains";
 import { ERC8004_ADDRESS, ERC8004_ABI, ERC8183_ADDRESS, ERC8183_ABI } from "@/lib";
 import dynamic from "next/dynamic";
@@ -28,21 +28,71 @@ export function Hero() {
         chainId: baseSepolia.id,
     });
 
-    // On-chain counts + dummy seed data offsets
-    const onChainAgents = Number(agentsData ?? 0);
-    const onChainJobs = Number(jobsData ?? 0);
+    const [realJobsCount, setRealJobsCount] = useState<number>(0);
+    const [isLoadingJobs, setIsLoadingJobs] = useState<boolean>(true);
+    const publicClient = usePublicClient({ chainId: baseSepolia.id });
 
-    // Dummy seed: 2 agents, 2 jobs, 0.008 + 0.015 = 0.023 WETH dummy escrow
+    // On-chain agents counts + dummy offsets
+    const onChainAgents = Number(agentsData ?? 0);
     const DUMMY_AGENT_COUNT = 2;
+    const HIDDEN_AGENT_COUNT = 3; // blocklisted seed/test agents in Lists.tsx
+    const activeAgents = String(Math.max(0, onChainAgents - HIDDEN_AGENT_COUNT) + DUMMY_AGENT_COUNT);
+
     const DUMMY_JOB_COUNT = 2;
     const DUMMY_ESCROW_ETH = 0.023; // 0.008 + 0.015 WETH
-    const HIDDEN_AGENT_COUNT = 3; // blocklisted seed/test agents in Lists.tsx
 
-    const activeAgents = String(Math.max(0, onChainAgents - HIDDEN_AGENT_COUNT) + DUMMY_AGENT_COUNT);
-    const jobsSettled = String(DUMMY_JOB_COUNT); // on-chain jobs are empty/filtered, only dummies visible
+    // Fetch and filter jobs just like Lists.tsx to get the exact matching number
+    useEffect(() => {
+        if (!publicClient || jobsData === undefined) return;
+        
+        const totalJobsCounter = Number(jobsData);
+        if (totalJobsCounter === 0) {
+            setRealJobsCount(0);
+            setIsLoadingJobs(false);
+            return;
+        }
+
+        const fetchJobCount = async () => {
+            let validRealJobs = 0;
+            for (let i = 1; i <= totalJobsCounter; i++) {
+                try {
+                    const r: any = await publicClient.readContract({
+                        address: ERC8183_ADDRESS,
+                        abi: ERC8183_ABI,
+                        functionName: "jobs",
+                        args: [BigInt(i)],
+                    });
+                    if (r && r[0] !== undefined) {
+                        const provider = r[2] as string;
+                        const amount = BigInt(r[5]?.toString() || "0");
+                        const stateEnum = Number(r[6]);
+                        
+                        // stateEnum: 3=Completed, 5=Refunded
+                        const isCompletedOrRefunded = stateEnum === 3 || stateEnum === 5;
+                        const isEmptyGarbage = provider === "0x0000000000000000000000000000000000000000" && amount === BigInt(0);
+                        
+                        if (!isCompletedOrRefunded && !isEmptyGarbage) {
+                            validRealJobs++;
+                        }
+                    }
+                } catch (e) {
+                    // ignore fetch errors for individual jobs
+                }
+            }
+            setRealJobsCount(validRealJobs);
+            setIsLoadingJobs(false);
+        };
+        fetchJobCount();
+    }, [publicClient, jobsData]);
+
+    // Live Jobs section hides dummy jobs if real on-chain jobs have taken their IDs (job 1 and 2).
+    // So we calculate how many dummy jobs are actually still visible:
+    const rawJobsCount = Number(jobsData ?? 0);
+    const visibleDummyJobs = Math.max(0, DUMMY_JOB_COUNT - rawJobsCount);
+    const jobsSettled = isLoadingJobs ? "..." : String(realJobsCount + visibleDummyJobs); 
     
-    // Estimate total escrowed: on-chain jobs * ~0.000025 WETH each * $3000 + dummy escrow * $3000
-    const totalEscrowed = ((onChainJobs * 0.000025 + DUMMY_ESCROW_ETH) * 3000).toFixed(2);
+    // Estimate total escrowed: (raw jobs counted * ~0.000025) WETH + dummy escrow
+    const totalEscrowed = ((rawJobsCount * 0.000025 + DUMMY_ESCROW_ETH) * 3000).toFixed(2);
     return (
         <section className="hero">
             <div className="hero-ticker">
