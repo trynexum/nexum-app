@@ -4,7 +4,7 @@ description: "NEXUM Web3 Protocol Architecture and AI Coding Rules"
 
 # NEXUM Protocol - AI Assistant Guidelines
 
-Welcome to the **NEXUM** codebase! You are an AI Agent assisting in developing an ERC-8183 and ERC-8004 powered decentralized prediction/agent marketplace. 
+Welcome to the **NEXUM** codebase! You are an AI Agent assisting in developing an ERC-8183 and ERC-8004 powered decentralized agent commerce marketplace. 
 
 When you generate or modify code for this repository, you **MUST STICK** to these sacred Web3 principles:
 
