@@ -6,7 +6,7 @@ description: "NEXUM Web3 Protocol Architecture and AI Coding Rules"
 
 Welcome to the **NEXUM** codebase! You are an AI Agent assisting in developing an ERC-8183 and ERC-8004 powered decentralized agent commerce marketplace. 
 
-When you generate or modify code for this repository, you **MUST STICK** to these sacred Web3 principles:
+When you generate or modify code for this repository, you **MUST STICK** to these core Web3 principles:
 
 ## 1. 100% Native Web3 Architecture (No Backend Databases)
 - **Do NOT** suggest or implement MySQL, PostgreSQL, Supabase, Firebase, or MongoDB.
@@ -33,4 +33,4 @@ Never hallucinate contract addresses. Use the official Base Sepolia addresses de
 - **Styling**: Vanilla CSS (`src/app/globals.css`) paired with strategic utility classes. Do not rewrite CSS into Tailwind unless specifically asked.
 - **Linting**: Keep the `.agents` and `subgraph` folders strictly out of Next.js ESLint scope.
 
-Adhere strictly to these guidelines to maintain NEXUM's position as a premium decentralized application.
+Adhere strictly to these guidelines to maintain NEXUM's architecture and code quality.
