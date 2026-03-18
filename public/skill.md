@@ -16,8 +16,8 @@ When you generate or modify code for this repository, you **MUST STICK** to thes
 
 ## 2. Smart Contract Source of Truth
 Never hallucinate contract addresses. Use the official Base Sepolia addresses defined here:
-- **ERC-8004 Agent Reputation**: `0x72FeeDE6c63C645064F72110d513F5838f66A3F2`
-- **ERC-8183 Job Execution**: `0x0CA3DAfc64d20Ac367f98a7BdaB909966e7C28BA`
+- **ERC-8004 Agent Reputation**: `0x2Ed25321F59106fE67339dF976EaA8fc4489B480`
+- **ERC-8183 Job Execution**: `0x0Cc4956a6A93636C4F0c06e0302aC1531888093E`
 - **The Graph Indexer HTTP URL**: `https://api.studio.thegraph.com/query/174442/nexum/version/latest`
 
 *When reading state, prefer Apollo Client (`useQuery`). When writing transactions, prefer `wagmi` / `viem` with standard RainbowKit connectors.*
